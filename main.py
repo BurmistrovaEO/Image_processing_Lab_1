@@ -16,7 +16,7 @@ def psnr(img1, img2):
     mse = np.mean((img1 - img2) ** 2)
     if mse == 0:
         return "100"
-    return 10 * math.log10(1. / mse)
+    return 20 * math.log10(1. / mse)
 
 
 def bright(img1, brightness):
