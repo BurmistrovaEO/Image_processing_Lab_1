@@ -17,7 +17,7 @@ def psnr(img1, img2):
     return 20 * math.log10(1. / mse)
 
 
-def bright(img1, brightness):
+def brightRGB(img1, brightness):
     for x in range(img1.shape[0]):
         for y in range(img1.shape[1]):
             (b, g, r) = img1[x, y]
@@ -136,7 +136,7 @@ elif mode == '5':
 elif mode == '6':
     cv2.startWindowThread()
     image_1 = file_open_cv()
-    b = bright(image_1, 2)
+    b = brightRGB(image_1, 2)
     cv2.namedWindow('Press esc to close')
     cv2.imshow("Press esc to close", b)
     cv2.waitKey(0)
