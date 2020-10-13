@@ -37,13 +37,8 @@ def brightRGB(img1, brightness):
 
 def brightHSV(img1,value):
     imgHSV = cv2.cvtColor(img1, cv2.COLOR_BGR2HSV)
-    for x in range(imgHSV.shape[0]):
-        for y in range(imgHSV.shape[1]):
-            if (imgHSV[x, y][2] + value > 255):
-                imgHSV[x, y][2] = 255
-            else:
-                imgHSV[x, y][2] += value
-
+    h, s, v = cv2.split(imgHSV)
+    v += value
     img = cv2.cvtColor(imgHSV, cv2.COLOR_HSV2BGR)
     return img
 
