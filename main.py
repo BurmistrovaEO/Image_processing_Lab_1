@@ -35,6 +35,18 @@ def brightRGB(img1, brightness):
     return img1
 
 
+def brightHSV(img1,value):
+    imgHSV = cv2.cvtColor(img1, cv2.COLOR_BGR2HSV)
+    for x in range(imgHSV.shape[0]):
+        for y in range(imgHSV.shape[1]):
+            if (imgHSV[x, y][2] + value > 255):
+                imgHSV[x, y][2] = 255
+            else:
+                imgHSV[x, y][2] += value
+
+    img = cv2.cvtColor(imgHSV, cv2.COLOR_HSV2BGR)
+    return img
+
 def file_open_general():
     f = askopenfilename(title="Select file", filetypes=(("jpg files", "*.jpg"), ("png files", "*.png"),
                                                         ("jpeg files", "*.jpeg")))
@@ -117,7 +129,8 @@ print("Choose preferred mode:\n"
       "3 - Gray Scale filter(OpenCV)\n"
       "4 - Convert color model from RGB to HSV and back(PIL + matplotlib)\n"
       "5 - Convert color model from RGB to HSV and back(OpenCV)\n"
-      "6 - Brightness improvement\n")
+      "6 - Brightness improvement RGB\n"
+      "7 - Brightness improvement HSV\n"
 print('Input mode № = ')
 mode = input()
 if mode == '1':
@@ -137,6 +150,14 @@ elif mode == '6':
     cv2.startWindowThread()
     image_1 = file_open_cv()
     b = brightRGB(image_1, 2)
+    cv2.namedWindow('Press esc to close')
+    cv2.imshow("Press esc to close", b)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+elif mode == '7':
+    cv2.startWindowThread()
+    image_1 = file_open_cv()
+    b = brightHSV(image_1, 5)
     cv2.namedWindow('Press esc to close')
     cv2.imshow("Press esc to close", b)
     cv2.waitKey(0)
