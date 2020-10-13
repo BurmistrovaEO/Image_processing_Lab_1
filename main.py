@@ -9,8 +9,6 @@ import matplotlib
 
 
 def psnr(img1, img2):
-    img1 = cv2.resize(img1, (1000, 1000), interpolation=cv2.INTER_AREA)
-    img2 = cv2.resize(img2, (1000, 1000), interpolation=cv2.INTER_AREA)
     img1 = img1.astype(np.float64) / 255.
     img2 = img2.astype(np.float64) / 255.
     mse = np.mean((img1 - img2) ** 2)
