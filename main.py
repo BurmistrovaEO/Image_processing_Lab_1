@@ -9,17 +9,15 @@ import matplotlib
 
 
 def psnr(img1, img2):
-    img1 = cv2.resize(img1, (1000, 1000), interpolation=cv2.INTER_AREA)
-    img2 = cv2.resize(img2, (1000, 1000), interpolation=cv2.INTER_AREA)
     img1 = img1.astype(np.float64) / 255.
     img2 = img2.astype(np.float64) / 255.
     mse = np.mean((img1 - img2) ** 2)
     if mse == 0:
         return "100"
-    return 10 * math.log10(1. / mse)
+    return 20 * math.log10(1. / mse)
 
 
-def bright(img1, brightness):
+def brightRGB(img1, brightness):
     for x in range(img1.shape[0]):
         for y in range(img1.shape[1]):
             (b, g, r) = img1[x, y]
@@ -36,6 +34,13 @@ def bright(img1, brightness):
             img1[x, y] = (blue, green, red)
     return img1
 
+
+def brightHSV(img1,value):
+    imgHSV = cv2.cvtColor(img1, cv2.COLOR_BGR2HSV)
+    h, s, v = cv2.split(imgHSV)
+    v += value
+    img = cv2.cvtColor(imgHSV, cv2.COLOR_HSV2BGR)
+    return img
 
 def file_open_general():
     f = askopenfilename(title="Select file", filetypes=(("jpg files", "*.jpg"), ("png files", "*.png"),
@@ -119,7 +124,8 @@ print("Choose preferred mode:\n"
       "3 - Gray Scale filter(OpenCV)\n"
       "4 - Convert color model from RGB to HSV and back(PIL + matplotlib)\n"
       "5 - Convert color model from RGB to HSV and back(OpenCV)\n"
-      "6 - Brightness improvement\n")
+      "6 - Brightness improvement RGB\n"
+      "7 - Brightness improvement HSV\n"
 print('Input mode № = ')
 mode = input()
 if mode == '1':
@@ -138,7 +144,15 @@ elif mode == '5':
 elif mode == '6':
     cv2.startWindowThread()
     image_1 = file_open_cv()
-    b = bright(image_1, 2)
+    b = brightRGB(image_1, 2)
+    cv2.namedWindow('Press esc to close')
+    cv2.imshow("Press esc to close", b)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+elif mode == '7':
+    cv2.startWindowThread()
+    image_1 = file_open_cv()
+    b = brightHSV(image_1, 5)
     cv2.namedWindow('Press esc to close')
     cv2.imshow("Press esc to close", b)
     cv2.waitKey(0)
